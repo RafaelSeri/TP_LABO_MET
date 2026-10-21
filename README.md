@@ -40,7 +40,7 @@ temperatura promedio, potencia máxima y demanda por distribuidora (EDENOR, EDES
 ├── graficos/                    # Gráficos exportados con plt.savefig()
 ├── Informe/                     # Informe académico (.tex / link a Overleaf + PDF final)
 ├── PPT's/                       # Presentación de la defensa (PDF o link)
-└── CuestionesAdministrativas/   # Enunciado del TP
+└── GuíaTP/                      # Enunciado del TP
 ```
 
 ---

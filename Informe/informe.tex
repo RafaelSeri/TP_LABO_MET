@@ -1,0 +1,140 @@
+\documentclass[14pt,a4paper]{extarticle}
+
+% ---------- Paquetes ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\newcommand{\completar}[1]{\textcolor{red}{[#1]}}
+
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=blue}
+
+\begin{document}
+
+% ---------- Tapa ----------
+\begin{titlepage}
+\centering
+% Para agregar el logo: subí la imagen a Overleaf y descomentá la línea de abajo
+% \includegraphics[width=3cm]{logo_uba.png}\par\vspace{0.5cm}
+{\LARGE\bfseries Universidad de Buenos Aires\par}
+\vspace{0.2cm}
+{\Large Facultad de Ciencias Económicas\par}
+
+\vspace{0.2cm}
+{\large\itshape Laboratorio de Métodos Cuantitativos Aplicados a la Gestión\par}
+\vspace{0.5cm}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.2\textwidth]{Logo-FCE.png}
+\end{figure}
+
+\vspace{0cm}
+\rule{0.8\textwidth}{0.4pt}\par
+\vspace{0.5cm}
+{\huge\bfseries Influencia de la temperatura en la demanda eléctrica argentina\\[0.2cm] ¿Cuándo se vuelve crítica?\par}
+\vspace{0.3cm}
+\rule{0.8\textwidth}{0.4pt}\par
+\vspace{0.6cm}
+{\Large Trabajo Práctico Grupal\par}
+\vspace{0.1cm}
+{\large Exploración y análisis de datos asistido por IA\par}
+
+\vspace{0.6cm}
+\noindent\rule{0.7\textwidth}{0.4pt}
+
+
+\vspace{0.6cm}
+{\Large\scshape Integrantes\par}
+\vspace{0.3cm}
+{\large Berzoni Micaela · D'Angelo Genaro · Fiorini Catalina \\[0.15cm]
+Mingorance Federico · Seri Rafael\par}
+
+\vfill
+\vspace{0.2cm}
+{\normalsize Repositorio: \url{https://github.com/RafaelSeri/TP_LABO_MET}\par}
+\vspace{0.2cm}
+{\large 2do Cuatrimestre 2026\par}
+\end{titlepage}
+
+% ---------- Cuerpo (esqueleto) ----------
+\section{Resumen}
+Este trabajo analiza en qué medida la temperatura influye en la demanda de energía eléctrica en Argentina y en qué épocas del año esa influencia resulta más crítica. Se utilizan datos oficiales de demanda eléctrica y temperatura promedio entre enero de 2001 y agosto de 2026. El análisis, realizado en Python, incluye la limpieza de los datos, estadísticos agrupados por \completar{trimestre/estación} y visualizaciones de la evolución de la demanda y de su relación con la temperatura. Los resultados muestran que \completar{hallazgo principal}. Se concluye que \completar{conclusión principal}.
+
+\section{Introducción}
+La demanda de energía eléctrica en Argentina no se mantiene constante a lo largo del año. En los meses de verano, el uso masivo de equipos de aire acondicionado eleva el consumo, mientras que en invierno la calefacción eléctrica también puede generar aumentos. Estos picos ponen a prueba la capacidad del sistema eléctrico y pueden derivar en cortes de suministro, por lo que comprender sus causas resulta clave para la planificación energética. En este contexto, el presente trabajo busca responder la siguiente pregunta: \textit{¿en qué medida influye la temperatura en la demanda eléctrica argentina y en qué épocas del año esa influencia resulta más crítica?}
+
+Para abordarla se utilizan datos de demanda eléctrica y temperatura elaborados por CAMMESA (Compañía Administradora del Mercado Mayorista Eléctrico) y publicados por el Ministerio de Economía de la Nación. \completar{A continuación, la Sección 3 describe los datos y la metodología empleada; la Sección 4 presenta los resultados; y la Sección 5 expone las conclusiones, limitaciones y posibles extensiones del trabajo.}
+
+
+\section{Datos y metodología}
+
+\subsection*{Fuente y selección de los datos}
+Los datos se obtuvieron de la sección \textit{Economía en números}, que ofrece un archivo Excel de indicadores de nivel de actividad compuesto por 64 hojas. Se seleccionó únicamente la hoja 1.28, \textit{Demanda de Electricidad}, ya que reúne en un mismo cuadro la demanda eléctrica y la temperatura promedio.
+
+\subsection*{Estructura y variables}
+La hoja presenta la información organizada en tres bloques según su frecuencia: anual (2001--2025), trimestral (desde el primer trimestre de 2001 hasta el segundo de 2026) y mensual (desde enero de 2001 hasta agosto de 2026, con 308 registros). Para el análisis se utilizó el bloque \completar{mensual}. Las variables consideradas son:
+
+\begin{itemize}
+  \item \textbf{Demanda total} (GWh): energía eléctrica demandada en el período.
+  \item \textbf{Demanda por tipo de usuario} (GWh): residencial, comercio e industria, y grandes usuarios. Esta apertura está disponible a partir de enero de 2005.
+  \item \textbf{Temperatura promedio} (°C): temperatura media del período.
+  \item \textbf{Potencia máxima} (MW): pico de potencia demandada en el período.
+\end{itemize}
+
+La hoja incluye además la demanda desagregada por empresa distribuidora y la potencia instalada por tipo de tecnología, que no fueron utilizadas por exceder el alcance de la pregunta.
+
+\subsection*{Transformaciones}
+Las series de demanda total y temperatura promedio no presentan valores faltantes. En cambio, la demanda por tipo de usuario carece de datos para los 48 meses comprendidos entre 2001 y 2004, por lo que los análisis que utilizan esta apertura se restringen al período 2005--2026. Sobre los datos se realizaron las siguientes transformaciones: \completar{qué limpieza hicieron: renombrar columnas, separar año y mes, eliminar filas vacías, etc.}. Para analizar la estacionalidad, los meses se agruparon en \completar{trimestres/estaciones del año}. Dado que 2026 cuenta solo con datos hasta agosto, \completar{se excluyó de las comparaciones anuales / se mantuvo aclarando que es un año incompleto}.
+
+\subsection*{Herramientas}
+El análisis se desarrolló en Python, utilizando Google Colab como entorno de trabajo y las librerías pandas para la manipulación de datos y matplotlib y seaborn para las visualizaciones. Se utilizaron herramientas de inteligencia artificial como apoyo en la escritura de código y la interpretación de resultados, cuyo uso se detalla en la Sección 6.
+
+\section{Resultados}
+% Gráficos exportados desde Colab, tablas e interpretación.
+% Ejemplo para insertar un gráfico:
+% \begin{figure}[h]
+%   \centering
+%   \includegraphics[width=0.8\textwidth]{grafico1.png}
+%   \caption{Descripción del gráfico.}
+%   \label{fig:grafico1}
+% \end{figure}
+
+\subsection*{Resumen estadístico}
+\completar{Tabla con los estadísticos agrupados e interpretación.}
+
+\subsection*{Evolución temporal de la demanda}
+\completar{Gráfico 1 (serie temporal) e interpretación.}
+
+\subsection*{Comparación entre épocas del año}
+\completar{Gráfico 2 (barras) e interpretación.}
+
+\subsection*{Relación entre temperatura y demanda}
+\completar{Gráfico 3 (dispersión) e interpretación.}
+
+\section{Conclusiones}
+% Hallazgos principales, limitaciones y posibles extensiones.
+
+\subsection*{Hallazgos principales}
+\completar{Respuesta a la pregunta: cuánto influye la temperatura y en qué época es más crítica.}
+
+\subsection*{Limitaciones}
+\completar{2026 incompleto (hasta agosto); datos mensuales que ocultan olas de calor o frío de pocos días; temperatura promedio nacional; otros factores que afectan la demanda (actividad económica, tarifas, población).}
+
+\subsection*{Posibles extensiones}
+\completar{Qué se podría analizar a futuro.}
+
+\section{Reflexión metodológica}
+\completar{Uso de IA (herramientas, para qué, qué se corrigió), revisiones realizadas (intragrupal y externa) y aprendizajes.}
+
+\begin{thebibliography}{9}
+\bibitem{dataset}
+CAMMESA. Demanda de Electricidad (Cuadro 1.28). Publicado por el Ministerio de Economía de la Nación, \textit{Economía en números}. \url{https://www.argentina.gob.ar/economia/datos/nivel-de-actividad}
+\end{thebibliography}
+
+\end{document}
+

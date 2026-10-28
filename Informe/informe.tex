@@ -108,13 +108,63 @@ El análisis se desarrolló en Python, utilizando Google Colab como entorno de t
 \completar{Tabla con los estadísticos agrupados e interpretación.}
 
 \subsection*{Evolución temporal de la demanda}
-\completar{Gráfico 1 (serie temporal) e interpretación.}
+
+El análisis (Figura \ref{fig:evolucion}) nos permite observar el patrón de la demanda eléctrica a lo largo del año, comparándolo directamente con el ciclo de temperaturas.
+La demanda no es lineal respecto a la temperatura. Se observan dos picos claros: uno en los meses más fríos (junio-julio) y otro en los meses más cálidos (diciembre-febrero). Por otro lado, el bajo consumo se da en los meses templados.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width= 1\textwidth]{demanda_relativa_promedio_mes.png} 
+  \caption{Evolución de la demanda eléctrica diaria promedio y temperatura por mes.}
+  \label{fig:evolucion}
+\end{figure}
 
 \subsection*{Comparación entre épocas del año}
-\completar{Gráfico 2 (barras) e interpretación.}
+
+Se observa en este gráfico de barras (Figura \ref{fig:estaciones}) la demanda relativa promedio por estación del año para los tres segmentos principales: Residencial, Comercio e Industria, y Grandes Usuarios.
+
+El segmento Residencial muestra la mayor variación entre estaciones. Su demanda es máxima en invierno (por encima del 112\%) y mínima en primavera/otoño (por debajo del 90\%). Esto nos muestra que los hogares son los principales responsables de los picos estacionales del sistema.
+
+El segmento de Comercio e Industria tiene su pico en verano (superando el 106\%), probablemente por la refrigeración en locales comerciales.
+
+Los Grandes Usuarios presentan una demanda similar en todas las estaciones (cerca del 100\%), lo que demuestra que su consumo está atado a procesos productivos y no a las condiciones climáticas.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width= 1\textwidth]{demanda_relativa_estacion_segmento.png}
+  \caption{Demanda relativa promedio por estación del año y segmento de usuario.}
+  \label{fig:estaciones}
+\end{figure}
+
 
 \subsection*{Relación entre temperatura y demanda}
-\completar{Gráfico 3 (dispersión) e interpretación.}
+
+El gráfico de líneas (Figura \ref{fig:rangos}) muestra la demanda relativa promedio agrupada por rangos de temperatura (de menos de 12°C a más de 24°C).
+
+Se observa claramente que la demanda mínima se concentra en el rango templado de 15 a 21°C (valores cercanos al 93\%). A medida que la temperatura se aleja, la demanda se dispara. El extremo frío (menos de 12°C) genera un pico de demanda total del 107.6\%, mientras que el extremo cálido (más de 24°C) genera un pico similar, de 107\%.
+
+La línea naranja (Residencial) es la que tiene la pendiente más pronunciada en ambos extremos, confirmando que es el segmento que más reacciona al frío y al calor. La línea verde (Comercio e Industria) sube solo con el calor, y la roja (Grandes Usuarios) se mantiene casi plana.
+
+\vspace{0.5cm} 
+
+El gráfico de dispersión (Figura \ref{fig:dispersion}) muestra cada mes del dataset con un punto (Temperatura vs. Demanda Relativa), coloreado por estación, formando una parábola.
+
+Se nota claramente cómo los puntos rojos (Verano) se agrupan a la derecha, lo cual habla de altas temperaturas y alta demanda; los azules (Invierno) a la izquierda, referido a las bajas temperaturas y alta demanda; y los verdes/naranjas (Primavera/Otoño) en el centro con demanda baja. La dispersión de los puntos en esta zona central (15-20°C) indican que, cuando el clima es templado, otros factores toman mayor relevancia relativa para las variaciones de demanda.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width= 1\textwidth]{demanda_temperatura.png}
+  \caption{Demanda relativa según rango de temperatura.}
+  \label{fig:rangos}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width= 1\textwidth]{dispersion_temperatura.png}
+  \caption{Relación temperatura-demanda según estación del año.}
+  \label{fig:dispersion}
+\end{figure}
+
 
 \section{Conclusiones}
 % Hallazgos principales, limitaciones y posibles extensiones.

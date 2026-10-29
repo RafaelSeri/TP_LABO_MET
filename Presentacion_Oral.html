@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defensa TP - Demanda Eléctrica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,100..900&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,500&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* ══ Paleta y tipografía originales ══ */
+  :root {
+    --fondo: #EFEEEA;
+    --superficie: #FFFFFF;
+    --linea: #1A1A1A;
+    --texto: #1A1A1A;
+    --titulo: #171C2E;
+    --tenue: #57544E;
+    --borde: rgba(26, 26, 26, 0.16);
+    --naranja: #FF7A3D;
+    --resaltador: rgba(255, 122, 61, 0.45);
+    --salvia: #A9CDB1;
+    --verde: #2F7D5B;
+    --gris: #D6D2C8;
+    --gris-osc: #A29E94;
+    --serif: 'Noto Serif Display', Georgia, serif;
+    --sans: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: 'IBM Plex Mono', Consolas, 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    font-family: var(--sans); color: var(--texto); background-color: var(--fondo);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.33 0 0 0 0 0.3 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ══ Diapositivas ══ */
+  .slide {
+    position: absolute; inset: 0; z-index: 1;
+    padding: 63px 112px 99px; display: flex; flex-direction: column; justify-content: center; gap: 1.2rem;
+    opacity: 0; visibility: hidden; transition: opacity .45s ease, visibility .45s;
+    overflow-y: auto;
+  }
+  .slide.activa { opacity: 1; visibility: visible; }
+  .slide.activa > * { animation: subir .6s ease both; }
+  .slide.activa > *:nth-child(2) { animation-delay: .08s; }
+  .slide.activa > *:nth-child(3) { animation-delay: .16s; }
+  .slide.activa > *:nth-child(4) { animation-delay: .24s; }
+  .slide.activa > *:nth-child(5) { animation-delay: .32s; }
+  @keyframes subir { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+  h1, h2 { font-family: var(--serif); font-stretch: 68%; font-weight: 800; color: var(--titulo); letter-spacing: -0.01em; line-height: 1.02; }
+  h1 { font-size: clamp(2.8rem, 118.4px, 6.4rem); }
+  h2 { font-size: clamp(1.9rem, 70.4px, 3.5rem); max-width: 22ch; }
+  h2.ancho { max-width: none; }
+  .hl { background: linear-gradient(transparent 58%, var(--resaltador) 58%, var(--resaltador) 92%, transparent 92%); padding: 0 0.06em; }
+  p { color: var(--tenue); font-size: clamp(0.95rem, 21.6px, 1.2rem); line-height: 1.55; max-width: 60ch; }
+  p.grande { font-size: clamp(1.15rem, 32px, 1.6rem); color: var(--texto); }
+  strong { color: var(--texto); font-weight: 600; }
+  .marcado { background: var(--resaltador); padding: 0 0.15em; border-radius: 3px; color: var(--texto); }
+
+  .etiqueta {
+    display: inline-block; align-self: flex-start; width: fit-content;
+    background: var(--naranja); color: var(--texto);
+    font-weight: 700; font-size: clamp(0.72rem, 15.2px, 0.9rem); letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.38em 1.05em; border-radius: 999px;
+  }
+  .etiqueta.salvia { background: var(--salvia); }
+  .etiqueta.gris { background: var(--gris); }
+
+  /* Grillas */
+  .fila { display: grid; gap: 1.4rem; align-items: center; }
+  .dos { grid-template-columns: 1fr 1fr; }
+  .dos-uno { grid-template-columns: 1.6fr 1fr; }
+  .uno-dos { grid-template-columns: 1fr 1.6fr; }
+  .tres { grid-template-columns: repeat(3, 1fr); align-items: stretch; }
+  .cuatro { grid-template-columns: repeat(4, 1fr); align-items: stretch; }
+
+  /* Tarjetas y cifras */
+  .tarjeta { background: var(--superficie); border: 1.5px solid var(--linea); border-radius: 16px; padding: 1.2rem 1.3rem; }
+  .tarjeta h3 { font-size: clamp(1rem, 24px, 1.25rem); margin-bottom: .35rem; }
+  .tarjeta p { font-size: clamp(0.85rem, 17.6px, 1rem); }
+  .tarjeta.naranja { border-top: 7px solid var(--naranja); }
+  .tarjeta.verde { border-top: 7px solid var(--verde); }
+  .tarjeta.gris { border-top: 7px solid var(--gris-osc); }
+  .tarjeta.salvia { border-top: 7px solid var(--salvia); }
+  
+  .cifra b { display: block; font-family: var(--serif); font-stretch: 75%; font-weight: 800; color: var(--titulo);
+             font-size: clamp(2.2rem, 83.2px, 4.4rem); line-height: 1; margin: .2rem 0 .4rem; }
+  .cifra b.chica { font-size: clamp(1.6rem, 51.2px, 2.6rem); }
+  .cifra .rotulo { font-size: .85rem; font-weight: 600; color: var(--tenue); text-transform: uppercase; letter-spacing: .05em; }
+
+  .cita-grande { font-family: var(--serif); font-stretch: 75%; font-weight: 700; font-size: 34px; color: var(--titulo); }
+  .cita-grande span { font-family: var(--sans); font-size: 17px; font-weight: 500; color: var(--tenue); display: block; margin-top: .3rem; }
+  
+  .cita-libro { border-left: 6px solid var(--naranja); padding: .3rem 0 .3rem 1.4rem; margin: 0; }
+  .cita-libro p { font-family: var(--serif); font-stretch: 80%; font-weight: 500; font-size: 31px; line-height: 1.25; color: var(--titulo); }
+
+  /* Frases grandes (ideas) */
+  .ideas { display: grid; gap: 1.2rem; margin: .6rem 0; }
+  .idea { display: flex; gap: 1.3rem; align-items: baseline; max-width: none; font-family: var(--serif); font-stretch: 72%; font-weight: 700;
+          font-size: 48px; line-height: 1.12; color: var(--titulo); }
+  .idea .n { flex: none; display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--linea); color: #fff;
+             font-family: var(--sans); font-stretch: 100%; font-size: 20px; font-weight: 700; transform: translateY(-8px); }
+  .ideas.chicas .idea { font-size: 34px; }
+  .ideas.chicas .idea strong { font-weight: 800; }
+  .ideas.chicas .idea .n { width: 38px; height: 38px; font-size: 18px; transform: translateY(-4px); }
+
+  /* Escenario fijo que se escala entero a la ventana */
+  .escenario { position: absolute; left: 50%; top: 50%; width: 1600px; height: 900px;
+               transform: translate(-50%, -50%) scale(var(--escala, 1)); }
+
+  /* Lo que aparece de a un clic */
+  .paso { opacity: 0; transform: translateY(14px); transition: opacity .45s ease, transform .45s ease; }
+  .paso.visto, .ver-todo .paso { opacity: 1; transform: none; }
+  .slide.activa > .paso { animation: none; }
+
+  /* Navegación */
+  .barra { position: fixed; top: 0; left: 0; height: 4px; background: var(--naranja); z-index: 10; transition: width .4s; }
+  .pie { position: fixed; bottom: 0; left: 0; right: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between;
+         padding: 0 112px 19.8px; font-size: .82rem; color: #8a867d; pointer-events: none; font-weight: 600;}
+  .pie .controles { display: flex; gap: .5rem; align-items: center; pointer-events: auto; }
+  .pie button { width: 2.4rem; height: 2.4rem; border-radius: 50%; cursor: pointer; background: transparent; border: 1.5px solid var(--linea); font-size: 1rem; color: var(--texto); transition: background .2s;}
+  .pie button:hover { background: var(--naranja); }
+  .contador { min-width: 3.5rem; text-align: center; color: var(--tenue); }
+
+  /* Elementos específicos */
+  .portada { padding-right: max(16px, 704px); }
+  .autores { color: var(--texto); font-weight: 600; font-size: clamp(.9rem, 19.2px, 1.05rem); margin-top: 1rem;}
+  
+  .grafico-falso { background: var(--superficie); border: 1.5px solid var(--linea); border-radius: 16px; padding: 2rem; display: grid; place-items: center; text-align: center; font-family: var(--mono); color: var(--tenue); height: 100%; min-height: 250px;}
+
+  @media (max-width: 900px) {
+    html, body { overflow: auto; }
+    .slide { padding: 56px 16px 90px; justify-content: flex-start; }
+    .escenario { position: static; width: auto; height: auto; transform: none; }
+    .dos, .dos-uno, .uno-dos, .tres, .cuatro { grid-template-columns: 1fr; }
+    .portada { padding-right: 16px; }
+    .pie { padding: 0 16px 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="barra" id="barra"></div>
+<div class="escenario" id="escenario">
+
+<!-- · Slide 1: Portada -->
+<section class="slide portada activa" data-seccion="Portada">
+  <span class="etiqueta">Laboratorio de Métodos Cuantitativos</span>
+  <h1>Influencia de la temperatura <span class="hl">en la demanda eléctrica</span></h1>
+  <p class="grande">¿Cuándo el comportamiento del consumo vuelve crítico al sistema argentino?</p>
+  <div class="autores">
+    Berzoni M. · D'Angelo G. · Fiorini C. · Mingorance F. · Seri R.<br>
+    2do Cuatrimestre 2026 · FCE-UBA
+  </div>
+</section>
+
+<!-- · Slide 2: Pregunta de Investigación -->
+<section class="slide" data-seccion="La Pregunta">
+  <span class="etiqueta salvia">Motivación</span>
+  <h2 class="ancho">El sistema a prueba: <span class="hl">los picos de consumo</span></h2>
+  <div class="fila uno-dos" style="align-items:start">
+    <div style="display:grid; gap:1.4rem">
+      <p class="grande">La demanda de energía no es constante. Sus variaciones exigen al máximo la infraestructura, pudiendo causar cortes.</p>
+    </div>
+    <div style="display:grid; gap:1rem">
+      <blockquote class="cita-libro paso">
+        <p>¿En qué medida influye la temperatura en la demanda eléctrica argentina y <strong>en qué épocas del año esa influencia resulta más crítica?</strong></p>
+      </blockquote>
+    </div>
+  </div>
+  <p class="cita-grande paso" style="margin-top: 1rem;">La respuesta guía la planificación energética del país.</p>
+</section>
+
+<!-- · Slide 3: Carga y Exploración -->
+<section class="slide" data-seccion="Los Datos">
+  <span class="etiqueta">Carga y Exploración</span>
+  <h2 class="ancho">Datos oficiales de <span class="hl">CAMMESA</span></h2>
+  <p class="grande">Fuente: Ministerio de Economía, cuadro "Economía en números" (Hoja 1.28).</p>
+  
+  <div class="cuatro fila" style="margin-top: 1rem;">
+    <div class="tarjeta gris paso">
+      <h3>Frecuencia</h3>
+      <p>Bloque <strong>mensual</strong> evaluado desde 2001 hasta agosto de 2026.</p>
+    </div>
+    <div class="tarjeta salvia paso">
+      <h3>Demanda Total</h3>
+      <p>Energía eléctrica total demandada en el período (GWh).</p>
+    </div>
+    <div class="tarjeta naranja paso">
+      <h3>Temperatura</h3>
+      <p>Temperatura promedio (°C) de cada mes en análisis.</p>
+    </div>
+    <div class="tarjeta gris paso">
+      <h3>Segmentos</h3>
+      <p>Apertura por tipo de usuario: Residencial, Comercial/Industrial, Grandes Usuarios.</p>
+    </div>
+  </div>
+</section>
+
+<!-- · Slide 4: Transformaciones -->
+<section class="slide" data-seccion="Transformaciones">
+  <span class="etiqueta">Limpieza y Metodología</span>
+  <h2 class="ancho">Aislar el clima del <span class="hl">crecimiento histórico</span></h2>
+  
+  <div class="fila dos" style="align-items:stretch">
+    <div class="tarjeta naranja paso">
+      <h3>1. Recorte Temporal <span class="badge nn">2005 - 2026</span></h3>
+      <p>La apertura por tipo de usuario carecía de datos entre 2001 y 2004. <strong>Filtramos el dataset</strong> para asegurar un análisis completo y consistente de los segmentos.</p>
+    </div>
+    <div class="tarjeta salvia paso">
+      <h3>2. La Métrica Clave <span class="badge nn">%</span></h3>
+      <p>El país consume hoy mucha más energía que en 2005. Para no sesgar el análisis, calculamos la <strong>Demanda Relativa</strong> (el consumo diario expresado como % del promedio de su propio año).</p>
+    </div>
+  </div>
+  <p class="pista paso" style="margin-top: 1rem;"><strong>Decisión de negocio:</strong> Trasladar la limpieza desde Excel a código en Python garantiza que el cálculo sea transparente y reproducible.</p>
+</section>
+
+<!-- · Slide 5: Análisis Gráfico I (Estacionalidad) -->
+<section class="slide" data-seccion="Estacionalidad">
+  <span class="etiqueta salvia">Estacionalidad</span>
+  <h2 class="ancho">Picos en los extremos, <span class="hl">valles en el centro</span></h2>
+  
+  <div class="ideas chicas">
+    <p class="idea paso"><span class="n">A</span><span><strong>Invierno (Jun-Jul) y Verano (Dic-Feb):</strong> Se registran los picos máximos de demanda diaria.</span></p>
+    <p class="idea paso"><span class="n">B</span><span><strong>Otoño y Primavera:</strong> Los meses templados concentran el consumo más bajo del año.</span></p>
+    <p class="idea paso"><span class="n">C</span><span>La relación de la demanda respecto a las estaciones <strong>no es lineal</strong>, sino que rebota en las temperaturas extremas.</span></p>
+  </div>
+</section>
+
+<!-- · Slide 6: Análisis Gráfico II (Comportamiento en U) -->
+<section class="slide" data-seccion="Comportamiento en U">
+  <span class="etiqueta naranja">El Análisis Core</span>
+  <h2 class="ancho">El comportamiento en "U" <span class="hl">y sus responsables</span></h2>
+  
+  <div class="fila dos-uno" style="align-items:start">
+    <div style="display:grid; gap:.8rem">
+      <div class="tarjeta gris paso">
+        <h3>Zona Templada (15°C a 21°C)</h3>
+        <p>Valle de la curva. El clima no exige a la red (consumo relativo cerca del 93%).</p>
+      </div>
+      <div class="tarjeta naranja paso">
+        <h3>El hogar como motor (Residencial)</h3>
+        <p>Es la curva más pronunciada. <strong>Dispara los picos</strong> tanto con frío extremo (<12°C) por calefacción, como con calor (>24°C) por refrigeración.</p>
+      </div>
+      <div class="tarjeta salvia paso">
+        <h3>La Industria no mira el clima</h3>
+        <p>Los <em>Grandes Usuarios</em> mantienen una línea plana (~100%) todo el año. Su consumo responde a procesos productivos, no a la temperatura.</p>
+      </div>
+    </div>
+    
+    <div style="display:grid; gap:1rem; align-content:center" class="paso">
+       <div class="cifra">
+           <span class="rotulo">Pico por extremo frío (<12°C)</span>
+           <b>107.6%</b>
+       </div>
+       <div class="cifra">
+           <span class="rotulo">Pico por extremo cálido (>24°C)</span>
+           <b>107.0%</b>
+       </div>
+    </div>
+  </div>
+</section>
+
+<!-- · Slide 7: Conclusiones -->
+<section class="slide" data-seccion="Conclusiones">
+  <span class="etiqueta gris">Conclusiones</span>
+  <h2 class="ancho">Respuestas a <span class="hl">la pregunta inicial</span></h2>
+  
+  <div class="ideas chicas">
+    <p class="idea paso"><span class="n">1</span><span>La temperatura influye drásticamente, pero <strong>solo en los usuarios residenciales y comerciales</strong>.</span></p>
+    <p class="idea paso"><span class="n">2</span><span>El sistema eléctrico se vuelve crítico cuando la temperatura promedio cruza los umbrales de <strong><12°C</strong> (Invierno) y <strong>>24°C</strong> (Verano).</span></p>
+    <p class="idea paso"><span class="n">3</span><span>La adopción masiva de aires acondicionados y calefacción eléctrica es el principal vector de estrés para la infraestructura energética nacional.</span></p>
+  </div>
+</section>
+
+</div>
+
+<!-- Footer / Controles -->
+<footer class="pie">
+  <span id="pie-seccion"></span>
+  <div class="controles">
+    <button id="ant" aria-label="Anterior">←</button>
+    <span class="contador" id="contador"></span>
+    <button id="sig" aria-label="Siguiente">→</button>
+  </div>
+</footer>
+
+<script>
+  // ══ Navegación lógica de la presentación ══
+  const slides = [...document.querySelectorAll('.slide')];
+  let actual = 0;
+  
+  function ir(i) {
+    actual = Math.max(0, Math.min(slides.length - 1, i));
+    
+    // Resetear las animaciones de los pasos
+    const pasos = [...slides[actual].querySelectorAll('.paso')];
+    pasos.forEach(p => p.classList.remove('visto'));
+    
+    // Activar los pasos escalonadamente
+    pasos.forEach((p, k) => setTimeout(() => p.classList.add('visto'), 350 + k * 450));
+    
+    // Cambiar la visibilidad de las slides
+    slides.forEach((s, k) => s.classList.toggle('activa', k === actual));
+    
+    // Actualizar barra de progreso y footer
+    document.getElementById('barra').style.width = ((actual + 1) / slides.length * 100) + '%';
+    document.getElementById('contador').textContent = `${actual + 1} / ${slides.length}`;
+    document.getElementById('pie-seccion').textContent = slides[actual].dataset.seccion || '';
+    
+    // Actualizar URL (si es posible) sin recargar
+    try { history.replaceState(null, '', '#' + (actual + 1)); } catch (e) {}
+  }
+  
+  // Event listeners botones
+  document.getElementById('sig').addEventListener('click', () => ir(actual + 1));
+  document.getElementById('ant').addEventListener('click', () => ir(actual - 1));
+  
+  // Event listeners teclado
+  document.addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); ir(actual + 1); }
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); ir(actual - 1); }
+    if (e.key === 'f') (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()).catch(() => {});
+  });
+  
+  // Escala responsive
+  function ajustarEscala() {
+    const e = innerWidth <= 900 ? 1 : Math.min(innerWidth / 1600, innerHeight / 900);
+    document.documentElement.style.setProperty('--escala', e);
+  }
+  
+  addEventListener('resize', ajustarEscala); 
+  ajustarEscala();
+  
+  // Iniciar en la slide de la URL o en la primera
+  ir((parseInt(location.hash.slice(1)) || 1) - 1);
+</script>
+</body>
+</html>

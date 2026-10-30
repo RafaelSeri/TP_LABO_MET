@@ -1,83 +1,121 @@
-\documentclass[14pt,a4paper]{extarticle}
+\documentclass[10pt,a4paper]{article}
 
 % ---------- Paquetes ----------
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[spanish]{babel}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{mathptmx}                 % letra tipo Times
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{booktabs}
 \usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+\usepackage[font=small,labelfont=bf]{caption}
 \newcommand{\completar}[1]{\textcolor{red}{[#1]}}
 
 \hypersetup{colorlinks=true, linkcolor=black, urlcolor=blue}
 
+% ---------- Formato de títulos (estilo paper) ----------
+\titleformat{\section}{\normalfont\small\bfseries}{\thesection}{1em}{\MakeUppercase}
+\titlespacing*{\section}{0pt}{2.5ex plus 1ex}{1.2ex}
+\titleformat{\subsection}{\normalfont\small\bfseries}{\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{2ex plus 1ex}{1ex}
+\setlength{\columnsep}{0.8cm}
+
+% ---------- Encabezados ----------
+\pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyhead[LE,LO]{\small\thepage\quad\textit{Laboratorio de Métodos Cuantitativos Aplicados a la Gestión}}
+
 \begin{document}
 
 % ---------- Tapa ----------
+% Logo con el encabezado pegado a su derecha
 \begin{titlepage}
-\centering
-% Para agregar el logo: subí la imagen a Overleaf y descomentá la línea de abajo
-% \includegraphics[width=3cm]{logo_uba.png}\par\vspace{0.5cm}
-{\LARGE\bfseries Universidad de Buenos Aires\par}
-\vspace{0.2cm}
-{\Large Facultad de Ciencias Económicas\par}
-
-\vspace{0.2cm}
-{\large\itshape Laboratorio de Métodos Cuantitativos Aplicados a la Gestión\par}
-\vspace{0.5cm}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.2\textwidth]{Logo-FCE.png}
-\end{figure}
-
-\vspace{0cm}
-\rule{0.8\textwidth}{0.4pt}\par
-\vspace{0.5cm}
-{\huge\bfseries Influencia de la temperatura en la demanda eléctrica argentina\\[0.2cm] ¿Cuándo se vuelve crítica?\par}
-\vspace{0.3cm}
-\rule{0.8\textwidth}{0.4pt}\par
-\vspace{0.6cm}
-{\Large Trabajo Práctico Grupal\par}
-\vspace{0.1cm}
-{\large Exploración y análisis de datos asistido por IA\par}
-
-\vspace{0.6cm}
-\noindent\rule{0.7\textwidth}{0.4pt}
-
-
-\vspace{0.6cm}
-{\Large\scshape Integrantes\par}
-\vspace{0.3cm}
-{\large Berzoni Micaela · D'Angelo Genaro · Fiorini Catalina \\[0.15cm]
-Mingorance Federico · Seri Rafael\par}
+\thispagestyle{empty}
+\fontfamily{cmr}\fontsize{14}{17}\selectfont
+% Logo con el encabezado pegado a su derecha
+\noindent
+\begin{minipage}[c]{3.8cm}
+  \includegraphics[width=\linewidth]{Logo-FCE.png}
+\end{minipage}%
+\hspace{0.6cm}%
+\begin{minipage}[c]{9cm}
+  {\fontsize{20.74}{25}\selectfont\bfseries Universidad de Buenos Aires\par}
+  \vspace{0.2cm}
+  {\fontsize{17.28}{22}\selectfont Facultad de Ciencias Económicas\par}
+  \vspace{0.2cm}
+  {\fontsize{14}{17}\selectfont\itshape Laboratorio de Métodos Cuantitativos\\ Aplicados a la Gestión\par}
+\end{minipage}\par
 
 \vfill
-\vspace{0.2cm}
-{\normalsize Repositorio: \url{https://github.com/RafaelSeri/TP_LABO_MET}\par}
-\vspace{0.2cm}
-{\large 2do Cuatrimestre 2026\par}
-\end{titlepage}
+% Título a la derecha
+\begin{flushright}
+\rule{0.75\textwidth}{0.4pt}\par
+\vspace{0.5cm}
+{\fontsize{29.86}{37}\selectfont\bfseries Influencia de la temperatura\\ en la demanda eléctrica\\ argentina\par}
+\vspace{0.3cm}
+{\fontsize{20.74}{25}\selectfont ¿Cuándo se vuelve crítica?\par}
+\vspace{0.4cm}
+\rule{0.75\textwidth}{0.4pt}\par
+\vspace{0.5cm}
+{\fontsize{17.28}{22}\selectfont Trabajo Práctico Grupal\par}
+\vspace{0.1cm}
+{\fontsize{14}{17}\selectfont Exploración y análisis de datos asistido por IA\par}
+\end{flushright}
 
-% ---------- Cuerpo (esqueleto) ----------
-\section{Resumen}
-Este trabajo analiza en qué medida la temperatura influye en la demanda de energía eléctrica en Argentina y en qué épocas del año esa influencia resulta más crítica. Se utilizan datos oficiales de demanda eléctrica y temperatura promedio entre enero de 2001 y agosto de 2026. El análisis, realizado en Python, incluye la limpieza de los datos, estadísticos agrupados por \completar{trimestre/estación} y visualizaciones de la evolución de la demanda y de su relación con la temperatura. Los resultados muestran que \completar{hallazgo principal}. Se concluye que \completar{conclusión principal}.
+\vfill
+% Integrantes abajo de todo
+{\fontsize{17.28}{22}\selectfont\scshape Integrantes\par}
+\vspace{0.3cm}
+{\fontsize{12}{15}\selectfont
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}l@{\hspace{1.2cm}}l@{\hspace{1.2cm}}l@{}}
+\textit{Apellido y nombre} & \textit{Nro. de orden} & \textit{GitHub} \\[0.1cm]
+Berzoni Micaela     & 921783 & \texttt{micaelaberz} \\
+D'Angelo Genaro     & 921508 & \texttt{GenaroDangelo} \\
+Fiorini Catalina    & 921500 & \texttt{catafiorini} \\
+Mingorance Federico & 921485 & \texttt{fedem2004} \\
+Seri Rafael         & 921480 & \texttt{RafaelSeri} \\
+\end{tabular}\par}
+
+\vspace{0.8cm}
+{\fontsize{12}{15}\selectfont Repositorio: \url{https://github.com/RafaelSeri/TP_LABO_MET}\par}
+\vspace{0.15cm}
+{\fontsize{12}{15}\selectfont 2do Cuatrimestre 2026\par}
+\end{titlepage}
+% ---------- Cuerpo ----------
+\newgeometry{top=2.5cm,bottom=2.5cm,left=2cm,right=2cm,headsep=0.8cm}
+\setcounter{page}{1}
+\twocolumn[{%
+  \thispagestyle{primera}
+  \vspace*{0.5cm}
+  {\LARGE\bfseries Influencia de la temperatura en la demanda eléctrica argentina: ¿cuándo se vuelve crítica?\par}
+  \vspace{0.6cm}
+  \hspace*{0.3\textwidth}%
+  \begin{minipage}{0.7\textwidth}
+    {\small\bfseries RESUMEN\par}\vspace{0.1cm}
+    \small
+    Este trabajo analiza en qué medida la temperatura influye en la demanda de energía eléctrica en Argentina y en qué épocas del año esa influencia resulta más crítica. Se utilizan datos oficiales de demanda eléctrica y temperatura promedio entre enero de 2001 y agosto de 2026. El análisis, realizado en Python, incluye la limpieza de los datos, estadísticos agrupados por estación del año y por rangos de temperatura, visualizaciones de la evolución de la demanda y de su relación con la temperatura. Los resultados muestran una relación no lineal: la demanda es mínima entre 15 y 21°C y aumenta tanto con el frío como con el calor, alcanzando valores cercanos al 107\% del promedio en ambos extremos. Se concluye que el invierno y el verano son las épocas más críticas para el sistema, siendo el segmento residencial el más sensible a la temperatura.
+  \end{minipage}
+  \vspace{1cm}
+}]
 
 \section{Introducción}
 La demanda de energía eléctrica en Argentina no se mantiene constante a lo largo del año. En los meses de verano, el uso masivo de equipos de aire acondicionado eleva el consumo, mientras que en invierno la calefacción eléctrica también puede generar aumentos. Estos picos ponen a prueba la capacidad del sistema eléctrico y pueden derivar en cortes de suministro, por lo que comprender sus causas resulta clave para la planificación energética. En este contexto, el presente trabajo busca responder la siguiente pregunta: \textit{¿en qué medida influye la temperatura en la demanda eléctrica argentina y en qué épocas del año esa influencia resulta más crítica?}
 
-Para abordarla se utilizan datos de demanda eléctrica y temperatura elaborados por CAMMESA (Compañía Administradora del Mercado Mayorista Eléctrico) y publicados por el Ministerio de Economía de la Nación. \completar{A continuación, la Sección 3 describe los datos y la metodología empleada; la Sección 4 presenta los resultados; y la Sección 5 expone las conclusiones, limitaciones y posibles extensiones del trabajo.}
-
+Para abordarla se utilizan datos de demanda eléctrica y temperatura elaborados por CAMMESA (Compañía Administradora del Mercado Mayorista Eléctrico) y publicados por el Ministerio de Economía de la Nación.
 
 \section{Datos y metodología}
 
-\subsection*{Fuente y selección de los datos}
+\subsection{Fuente y selección de los datos}
 Los datos se obtuvieron de la sección \textit{Economía en números}, que ofrece un archivo Excel de indicadores de nivel de actividad compuesto por 64 hojas. Se seleccionó únicamente la hoja 1.28, \textit{Demanda de Electricidad}, ya que reúne en un mismo cuadro la demanda eléctrica y la temperatura promedio.
 
-\subsection*{Estructura y variables}
-La hoja presenta la información organizada en tres bloques según su frecuencia: anual (2001--2025), trimestral (desde el primer trimestre de 2001 hasta el segundo de 2026) y mensual (desde enero de 2001 hasta agosto de 2026, con 308 registros). Para el análisis se utilizó el bloque \completar{mensual}. Las variables consideradas son:
+\subsection{Estructura y variables}
+La hoja presenta la información organizada en tres bloques según su frecuencia: anual (2001--2025), trimestral (desde el primer trimestre de 2001 hasta el segundo de 2026) y mensual (desde enero de 2001 hasta agosto de 2026, con 308 registros). Para el análisis se utilizó el bloque mensual. Las variables consideradas son:
 
 \begin{itemize}
   \item \textbf{Demanda total} (GWh): energía eléctrica demandada en el período.
@@ -88,42 +126,62 @@ La hoja presenta la información organizada en tres bloques según su frecuencia
 
 La hoja incluye además la demanda desagregada por empresa distribuidora y la potencia instalada por tipo de tecnología, que no fueron utilizadas por exceder el alcance de la pregunta.
 
-\subsection*{Transformaciones}
-Las series de demanda total y temperatura promedio no presentan valores faltantes. En cambio, la demanda por tipo de usuario carece de datos para los 48 meses comprendidos entre 2001 y 2004, por lo que los análisis que utilizan esta apertura se restringen al período 2005--2026. Sobre los datos se realizaron las siguientes transformaciones: \completar{qué limpieza hicieron: renombrar columnas, separar año y mes, eliminar filas vacías, etc.}. Para analizar la estacionalidad, los meses se agruparon en \completar{trimestres/estaciones del año}. Dado que 2026 cuenta solo con datos hasta agosto, \completar{se excluyó de las comparaciones anuales / se mantuvo aclarando que es un año incompleto}.
+\subsection{Transformaciones}
+Las series de demanda total y temperatura promedio no presentan valores faltantes. En cambio, la demanda por tipo de usuario carece de datos para los 48 meses comprendidos entre 2001 y 2004, por lo que los análisis que utilizan esta apertura se restringen al período 2005--2026. Sobre los datos se realizaron las siguientes transformaciones:
 
-\subsection*{Herramientas}
-El análisis se desarrolló en Python, utilizando Google Colab como entorno de trabajo y las librerías pandas para la manipulación de datos y matplotlib y seaborn para las visualizaciones. Se utilizaron herramientas de inteligencia artificial como apoyo en la escritura de código y la interpretación de resultados, cuyo uso se detalla en la Sección 6.
+\begin{itemize}
+  \item \textbf{Demanda diaria}: la demanda de cada mes se dividió por su cantidad de días, para que los meses más cortos no aparezcan con menor demanda.
+  \item \textbf{Demanda relativa}: la demanda diaria de cada mes se expresó como porcentaje respecto del promedio de su año, lo que permite comparar segmentos de distinto tamaño y eliminar el efecto del crecimiento de la demanda a lo largo del tiempo. El año 2026 se excluyó de este cálculo, ya que solo cuenta con datos hasta agosto y su promedio anual, al no incluir los últimos cuatro meses del año, quedaría sesgado. Por lo tanto, los resúmenes por mes, estación y rango de temperatura abarcan el período 2005--2025, mientras que 2026 se conserva en la serie temporal de la demanda.
+  \item \textbf{Estación del año}: se creó una columna que asigna cada mes a su estación (verano, otoño, invierno y primavera), para analizar el comportamiento estacional.
+  \item \textbf{Rangos de temperatura}: la temperatura promedio se agrupó en rangos (desde menos de 12°C hasta más de 24°C) para observar cómo varía la demanda según el nivel de temperatura.
+\end{itemize}
+
+\subsection{Herramientas}
+El análisis se desarrolló en Python, utilizando Google Colab como entorno de trabajo y las librerías pandas para la manipulación de datos y matplotlib y seaborn para las visualizaciones. Se utilizaron herramientas de inteligencia artificial como apoyo en la escritura de código y la interpretación de resultados, cuyo uso se detalla en la Sección~\ref{sec:reflexion}.
 
 \section{Resultados}
-% Gráficos exportados desde Colab, tablas e interpretación.
-% Ejemplo para insertar un gráfico:
-% \begin{figure}[h]
-%   \centering
-%   \includegraphics[width=0.8\textwidth]{grafico1.png}
-%   \caption{Descripción del gráfico.}
-%   \label{fig:grafico1}
-% \end{figure}
 
-\subsection*{Resumen estadístico}
-\completar{Tabla con los estadísticos agrupados e interpretación.}
+\subsection{Resumen estadístico}
+La Tabla~\ref{tab:rangos} presenta la demanda relativa promedio por segmento y la cantidad de meses observados en cada rango de temperatura, para el período 2005--2025.
 
-\subsection*{Evolución temporal de la demanda}
+\begin{table}[h]
+  \centering
+  \caption{Demanda relativa promedio (\% del promedio anual) según rango de temperatura.}
+  \label{tab:rangos}
+  \resizebox{\columnwidth}{!}{%
+  \begin{tabular}{lccccc}
+    \toprule
+    \textbf{Rango} & \textbf{Total} & \textbf{Resid.} & \textbf{Com. e Ind.} & \textbf{Grandes Us.} & \textbf{Meses} \\
+    \midrule
+    Menos de 12°C & 107.6 & 120.3 & 99.4  & 97.3  & 22 \\
+    12 a 15°C     & 101.2 & 105.3 & 97.5  & 99.5  & 56 \\
+    15 a 18°C     & 93.3  & 89.1  & 94.8  & 99.9  & 41 \\
+    18 a 21°C     & 92.8  & 84.6  & 97.0  & 101.7 & 38 \\
+    21 a 24°C     & 99.1  & 95.0  & 102.2 & 101.8 & 44 \\
+    Más de 24°C   & 107.0 & 110.0 & 107.5 & 99.0  & 51 \\
+    \bottomrule
+  \end{tabular}}
+\end{table}
 
-El análisis (Figura \ref{fig:evolucion}) nos permite observar el patrón de la demanda eléctrica a lo largo del año, comparándolo directamente con el ciclo de temperaturas.
+La demanda total alcanza sus valores más bajos entre 15 y 21°C y aumenta hacia ambos extremos. El segmento residencial presenta la mayor amplitud: pasa del 84.6\% en el rango de 18 a 21°C al 120.3\% con temperaturas inferiores a 12°C. Comercio e Industria solo supera su promedio con temperaturas mayores a 21°C, mientras que Grandes Usuarios se mantiene cerca del 100\% en todos los rangos. Cabe señalar que el rango más frío reúne solo 22 meses, por lo que sus promedios se basan en menos observaciones.
+
+\subsection{Evolución temporal de la demanda}
+
+La Figura~\ref{fig:evolucion} permite observar el patrón de la demanda eléctrica a lo largo del año, en comparación con el ciclo de temperaturas.
 La demanda no es lineal respecto a la temperatura. Se observan dos picos claros: uno en los meses más fríos (junio-julio) y otro en los meses más cálidos (diciembre-febrero). Por otro lado, el bajo consumo se da en los meses templados.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width= 1\textwidth]{demanda_relativa_promedio_mes.png} 
+  \includegraphics[width=\columnwidth]{1.1.png}
   \caption{Evolución de la demanda eléctrica diaria promedio y temperatura por mes.}
   \label{fig:evolucion}
 \end{figure}
 
-\subsection*{Comparación entre épocas del año}
+\subsection{Comparación entre épocas del año}
 
-Se observa en este gráfico de barras (Figura \ref{fig:estaciones}) la demanda relativa promedio por estación del año para los tres segmentos principales: Residencial, Comercio e Industria, y Grandes Usuarios.
+La Figura~\ref{fig:estaciones} presenta la demanda relativa promedio por estación del año para los tres segmentos principales: Residencial, Comercio e Industria, y Grandes Usuarios.
 
-El segmento Residencial muestra la mayor variación entre estaciones. Su demanda es máxima en invierno (por encima del 112\%) y mínima en primavera/otoño (por debajo del 90\%). Esto nos muestra que los hogares son los principales responsables de los picos estacionales del sistema.
+El segmento Residencial muestra la mayor variación entre estaciones. Su demanda es máxima en invierno (por encima del 112\%) y mínima en primavera/otoño (por debajo del 90\%). Esto indica que los hogares son los principales responsables de los picos estacionales del sistema.
 
 El segmento de Comercio e Industria tiene su pico en verano (superando el 106\%), probablemente por la refrigeración en locales comerciales.
 
@@ -131,55 +189,56 @@ Los Grandes Usuarios presentan una demanda similar en todas las estaciones (cerc
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width= 1\textwidth]{demanda_relativa_estacion_segmento.png}
+  \includegraphics[width=\columnwidth]{1.2.png}
   \caption{Demanda relativa promedio por estación del año y segmento de usuario.}
   \label{fig:estaciones}
 \end{figure}
 
+\subsection{Relación entre temperatura y demanda}
 
-\subsection*{Relación entre temperatura y demanda}
-
-El gráfico de líneas (Figura \ref{fig:rangos}) muestra la demanda relativa promedio agrupada por rangos de temperatura (de menos de 12°C a más de 24°C).
+La Figura~\ref{fig:rangos} muestra la demanda relativa promedio agrupada por rangos de temperatura, desde menos de 12°C hasta más de 24°C.
 
 Se observa claramente que la demanda mínima se concentra en el rango templado de 15 a 21°C (valores cercanos al 93\%). A medida que la temperatura se aleja, la demanda se dispara. El extremo frío (menos de 12°C) genera un pico de demanda total del 107.6\%, mientras que el extremo cálido (más de 24°C) genera un pico similar, de 107\%.
 
 La línea naranja (Residencial) es la que tiene la pendiente más pronunciada en ambos extremos, confirmando que es el segmento que más reacciona al frío y al calor. La línea verde (Comercio e Industria) sube solo con el calor, y la roja (Grandes Usuarios) se mantiene casi plana.
 
-\vspace{0.5cm} 
-
-El gráfico de dispersión (Figura \ref{fig:dispersion}) muestra cada mes del dataset con un punto (Temperatura vs. Demanda Relativa), coloreado por estación, formando una parábola.
+En la Figura~\ref{fig:dispersion}, cada punto representa un mes del dataset según su temperatura y su demanda relativa, coloreado por estación. En conjunto, los puntos forman una parábola.
 
 Se nota claramente cómo los puntos rojos (Verano) se agrupan a la derecha, lo cual habla de altas temperaturas y alta demanda; los azules (Invierno) a la izquierda, referido a las bajas temperaturas y alta demanda; y los verdes/naranjas (Primavera/Otoño) en el centro con demanda baja. La dispersión de los puntos en esta zona central (15-20°C) indican que, cuando el clima es templado, otros factores toman mayor relevancia relativa para las variaciones de demanda.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width= 1\textwidth]{demanda_temperatura.png}
+  \includegraphics[width=\columnwidth]{1.3.png}
   \caption{Demanda relativa según rango de temperatura.}
   \label{fig:rangos}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width= 1\textwidth]{dispersion_temperatura.png}
+  \includegraphics[width=\columnwidth]{1.4.png}
   \caption{Relación temperatura-demanda según estación del año.}
   \label{fig:dispersion}
 \end{figure}
 
-
 \section{Conclusiones}
-% Hallazgos principales, limitaciones y posibles extensiones.
 
-\subsection*{Hallazgos principales}
-\completar{Respuesta a la pregunta: cuánto influye la temperatura y en qué época es más crítica.}
+\subsection{Hallazgos principales}
+La temperatura influye de manera significativa en la demanda eléctrica argentina, aunque su relación no es lineal. La demanda alcanza su mínimo con temperaturas templadas, entre 15 y 21°C, y aumenta hacia ambos extremos, con valores cercanos al 107\% del promedio anual tanto en los meses más fríos como en los más cálidos. En consecuencia, el invierno y el verano constituyen las épocas más críticas para el sistema. El segmento residencial es el principal responsable de este comportamiento, con picos que superan el 120\% en el frío, mientras que Comercio e Industria reacciona solo al calor y Grandes Usuarios mantiene una demanda prácticamente independiente de la temperatura.
 
-\subsection*{Limitaciones}
-\completar{2026 incompleto (hasta agosto); datos mensuales que ocultan olas de calor o frío de pocos días; temperatura promedio nacional; otros factores que afectan la demanda (actividad económica, tarifas, población).}
+\subsection{Limitaciones}
+El análisis trabaja con datos mensuales, por lo que no captura las olas de calor o de frío de pocos días, que suelen concentrar los picos de demanda. Además, la temperatura corresponde a un promedio nacional y no refleja las diferencias climáticas entre regiones. Los rangos extremos de temperatura reúnen pocos meses, y la apertura por segmento solo está disponible desde 2005. Por último, la demanda también depende de factores no considerados, como la actividad económica, las tarifas o el crecimiento de la población.
 
-\subsection*{Posibles extensiones}
-\completar{Qué se podría analizar a futuro.}
+\subsection{Posibles extensiones}
+Como extensiones, podrían utilizarse datos diarios u horarios para estudiar los picos de corta duración, incorporar información regional o estimar un modelo que cuantifique el efecto de la temperatura controlando por otros factores económicos.
 
-\section{Reflexión metodológica}
-\completar{Uso de IA (herramientas, para qué, qué se corrigió), revisiones realizadas (intragrupal y externa) y aprendizajes.}
+\section{Reflexión metodológica}\label{sec:reflexion}
+Se utilizó inteligencia artificial; particularmente Claude, Gemini y ChatGP, como apoyo tanto en el desarrollo del notebook como en la elaboración del informe. Para ello, se le brindó contexto sobre el trabajo y ejemplos de archivos de clase que reflejaban el estilo buscado.
+
+En el notebook, la IA propuso la estructura general y la organización de las celdas. La metodología consistió en indicarle qué se buscaba hacer para que generara el código correspondiente, que luego fue ajustado por el grupo, agregando o modificando líneas según las necesidades del análisis. En el caso de los gráficos, el código se elaboró a partir de una estética definida previamente. Además, la IA se utilizó para corregir errores de código y mejorar la redacción de las interpretaciones.
+
+En el informe, se le solicitó la estructura inicial en \LaTeX, el diseño de la carátula y borradores de cada sección, que luego fueron revisados y corregidos en sucesivas iteraciones.
+
+Como aprendizaje, el trabajo mostró que la IA agiliza la redacción y la detección de errores, pero que la interpretación de los resultados y las decisiones metodológicas requieren el criterio del grupo.
 
 \begin{thebibliography}{9}
 \bibitem{dataset}
@@ -187,4 +246,3 @@ CAMMESA. Demanda de Electricidad (Cuadro 1.28). Publicado por el Ministerio de E
 \end{thebibliography}
 
 \end{document}
-

@@ -15,6 +15,7 @@
 \usepackage{tikz}
 \usetikzlibrary{babel}
 \usepackage[font=small,labelfont=bf]{caption}
+\usepackage{float}                    % permite [H] para fijar figuras
 \newcommand{\completar}[1]{\textcolor{red}{[#1]}}
 
 \hypersetup{colorlinks=true, linkcolor=black, urlcolor=blue}
@@ -33,7 +34,6 @@
 \begin{document}
 
 % ---------- Tapa ----------
-% Logo con el encabezado pegado a su derecha
 \begin{titlepage}
 \thispagestyle{empty}
 \fontfamily{cmr}\fontsize{14}{17}\selectfont
@@ -91,7 +91,6 @@ Seri Rafael         & 921480 & \texttt{RafaelSeri} \\
 \newgeometry{top=2.5cm,bottom=2.5cm,left=2cm,right=2cm,headsep=0.8cm}
 \setcounter{page}{1}
 \twocolumn[{%
-  \thispagestyle{primera}
   \vspace*{0.5cm}
   {\LARGE\bfseries Influencia de la temperatura en la demanda eléctrica argentina: ¿cuándo se vuelve crítica?\par}
   \vspace{0.6cm}
@@ -99,7 +98,7 @@ Seri Rafael         & 921480 & \texttt{RafaelSeri} \\
   \begin{minipage}{0.7\textwidth}
     {\small\bfseries RESUMEN\par}\vspace{0.1cm}
     \small
-    Este trabajo analiza en qué medida la temperatura influye en la demanda de energía eléctrica en Argentina y en qué épocas del año esa influencia resulta más crítica. Se utilizan datos oficiales de demanda eléctrica y temperatura promedio entre enero de 2001 y agosto de 2026. El análisis, realizado en Python, incluye la limpieza de los datos, estadísticos agrupados por estación del año y por rangos de temperatura, visualizaciones de la evolución de la demanda y de su relación con la temperatura. Los resultados muestran una relación no lineal: la demanda es mínima entre 15 y 21°C y aumenta tanto con el frío como con el calor, alcanzando valores cercanos al 107\% del promedio en ambos extremos. Se concluye que el invierno y el verano son las épocas más críticas para el sistema, siendo el segmento residencial el más sensible a la temperatura.
+    Este trabajo analiza en qué medida la temperatura influye en la demanda de energía eléctrica en Argentina y en qué épocas del año esa influencia resulta más crítica. Se utilizan datos oficiales de demanda eléctrica y temperatura promedio entre enero de 2001 y agosto de 2026. El análisis, realizado en Python, incluye la limpieza de los datos, estadísticos agrupados por estación del año y por rangos de temperatura, y visualizaciones de la evolución de la demanda y de su relación con la temperatura. Los resultados muestran una relación no lineal: la demanda es mínima entre 15 y 21°C y aumenta tanto con el frío como con el calor, alcanzando valores cercanos al 107\% del promedio anual en ambos extremos. Se concluye que el invierno y el verano son las épocas más críticas para el sistema, siendo el segmento residencial el más sensible a la temperatura.
   \end{minipage}
   \vspace{1cm}
 }]
@@ -124,7 +123,7 @@ La hoja presenta la información organizada en tres bloques según su frecuencia
   \item \textbf{Potencia máxima} (MW): pico de potencia demandada en el período.
 \end{itemize}
 
-La hoja incluye además la demanda desagregada por empresa distribuidora y la potencia instalada por tipo de tecnología, que no fueron utilizadas por exceder el alcance de la pregunta.
+La hoja incluye además la demanda desagregada por empresa distribuidora y la potencia instalada por tipo de tecnología, que no fueron utilizadas.
 
 \subsection{Transformaciones}
 Las series de demanda total y temperatura promedio no presentan valores faltantes. En cambio, la demanda por tipo de usuario carece de datos para los 48 meses comprendidos entre 2001 y 2004, por lo que los análisis que utilizan esta apertura se restringen al período 2005--2026. Sobre los datos se realizaron las siguientes transformaciones:
@@ -144,7 +143,7 @@ El análisis se desarrolló en Python, utilizando Google Colab como entorno de t
 \subsection{Resumen estadístico}
 La Tabla~\ref{tab:rangos} presenta la demanda relativa promedio por segmento y la cantidad de meses observados en cada rango de temperatura, para el período 2005--2025.
 
-\begin{table}[h]
+\begin{table}[H]
   \centering
   \caption{Demanda relativa promedio (\% del promedio anual) según rango de temperatura.}
   \label{tab:rangos}
@@ -167,57 +166,48 @@ La demanda total alcanza sus valores más bajos entre 15 y 21°C y aumenta hacia
 
 \subsection{Evolución temporal de la demanda}
 
-La Figura~\ref{fig:evolucion} permite observar el patrón de la demanda eléctrica a lo largo del año, en comparación con el ciclo de temperaturas.
-La demanda no es lineal respecto a la temperatura. Se observan dos picos claros: uno en los meses más fríos (junio-julio) y otro en los meses más cálidos (diciembre-febrero). Por otro lado, el bajo consumo se da en los meses templados.
+La Figura~\ref{fig:evolucion} muestra la evolución mensual de la demanda eléctrica diaria promedio entre 2005 y 2026. La serie presenta una tendencia creciente sostenida: la demanda aumentó más de un 50\% en el período, y la tendencia lineal explica el 66\% de su variación ($R^2 = 0{,}66$). Sobre esa tendencia se observan oscilaciones que se repiten todos los años, lo que anticipa el componente estacional que se analiza en las secciones siguientes. El máximo de la serie se registró en febrero de 2025, con 461 GWh por día, mientras que la caída más pronunciada corresponde a abril de 2020, asociada a las restricciones por la pandemia.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[width=\columnwidth]{1.1.png}
-  \caption{Evolución de la demanda eléctrica diaria promedio y temperatura por mes.}
+  \caption{Evolución mensual de la demanda eléctrica diaria promedio, 2005--2026.}
   \label{fig:evolucion}
 \end{figure}
 
-\subsection{Comparación entre épocas del año}
+\subsection{Ciclo anual de la demanda y la temperatura}
+
+La Figura~\ref{fig:mensual} compara la demanda relativa promedio de cada mes con la temperatura promedio mensual. Mientras la temperatura sigue un único ciclo anual, con máximos en verano y mínimos en invierno, la demanda presenta dos picos: uno en los meses más fríos (junio y julio) y otro en los más cálidos (diciembre a febrero). Los menores niveles de consumo se registran en los meses templados de otoño y primavera. Esto indica que la relación entre temperatura y demanda no es lineal: tanto el frío como el calor elevan el consumo.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\columnwidth]{1.2.png}
+  \caption{Demanda relativa promedio y temperatura promedio por mes.}
+  \label{fig:mensual}
+\end{figure}
+
+\subsection{Comparación entre estaciones y segmentos}
 
 La Figura~\ref{fig:estaciones} presenta la demanda relativa promedio por estación del año para los tres segmentos principales: Residencial, Comercio e Industria, y Grandes Usuarios.
 
-El segmento Residencial muestra la mayor variación entre estaciones. Su demanda es máxima en invierno (por encima del 112\%) y mínima en primavera/otoño (por debajo del 90\%). Esto indica que los hogares son los principales responsables de los picos estacionales del sistema.
+El segmento Residencial muestra la mayor variación entre estaciones: su demanda es máxima en invierno (por encima del 112\%) y mínima en otoño y primavera (por debajo del 90\%). Esto indica que los hogares son los principales responsables de los picos estacionales del sistema. Comercio e Industria alcanza su pico en verano (superando el 106\%), probablemente por el uso de refrigeración en locales comerciales. Grandes Usuarios, en cambio, presenta una demanda similar en todas las estaciones (cerca del 100\%), lo que sugiere que su consumo depende de los procesos productivos más que de las condiciones climáticas.
 
-El segmento de Comercio e Industria tiene su pico en verano (superando el 106\%), probablemente por la refrigeración en locales comerciales.
-
-Los Grandes Usuarios presentan una demanda similar en todas las estaciones (cerca del 100\%), lo que demuestra que su consumo está atado a procesos productivos y no a las condiciones climáticas.
-
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=\columnwidth]{1.2.png}
+  \includegraphics[width=\columnwidth]{1.3.png}
   \caption{Demanda relativa promedio por estación del año y segmento de usuario.}
   \label{fig:estaciones}
 \end{figure}
 
 \subsection{Relación entre temperatura y demanda}
 
-La Figura~\ref{fig:rangos} muestra la demanda relativa promedio agrupada por rangos de temperatura, desde menos de 12°C hasta más de 24°C.
+La Figura~\ref{fig:rangos} muestra la demanda relativa promedio de cada segmento según el rango de temperatura. La demanda total alcanza su mínimo entre 15 y 21°C y aumenta hacia ambos extremos, con valores de 107.6\% por debajo de 12°C y de 107\% por encima de 24°C. El segmento Residencial presenta la pendiente más pronunciada en ambos extremos, lo que lo convierte en el más sensible tanto al frío como al calor. Comercio e Industria solo aumenta su demanda con temperaturas altas, mientras que Grandes Usuarios se mantiene prácticamente constante en todos los rangos.
 
-Se observa claramente que la demanda mínima se concentra en el rango templado de 15 a 21°C (valores cercanos al 93\%). A medida que la temperatura se aleja, la demanda se dispara. El extremo frío (menos de 12°C) genera un pico de demanda total del 107.6\%, mientras que el extremo cálido (más de 24°C) genera un pico similar, de 107\%.
-
-La línea naranja (Residencial) es la que tiene la pendiente más pronunciada en ambos extremos, confirmando que es el segmento que más reacciona al frío y al calor. La línea verde (Comercio e Industria) sube solo con el calor, y la roja (Grandes Usuarios) se mantiene casi plana.
-
-En la Figura~\ref{fig:dispersion}, cada punto representa un mes del dataset según su temperatura y su demanda relativa, coloreado por estación. En conjunto, los puntos forman una parábola.
-
-Se nota claramente cómo los puntos rojos (Verano) se agrupan a la derecha, lo cual habla de altas temperaturas y alta demanda; los azules (Invierno) a la izquierda, referido a las bajas temperaturas y alta demanda; y los verdes/naranjas (Primavera/Otoño) en el centro con demanda baja. La dispersión de los puntos en esta zona central (15-20°C) indican que, cuando el clima es templado, otros factores toman mayor relevancia relativa para las variaciones de demanda.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\columnwidth]{1.3.png}
-  \caption{Demanda relativa según rango de temperatura.}
-  \label{fig:rangos}
-\end{figure}
-
-\begin{figure}[htbp]
+\begin{figure}[H]
   \centering
   \includegraphics[width=\columnwidth]{1.4.png}
-  \caption{Relación temperatura-demanda según estación del año.}
-  \label{fig:dispersion}
+  \caption{Demanda relativa promedio según rango de temperatura y segmento.}
+  \label{fig:rangos}
 \end{figure}
 
 \section{Conclusiones}
@@ -232,7 +222,7 @@ El análisis trabaja con datos mensuales, por lo que no captura las olas de calo
 Como extensiones, podrían utilizarse datos diarios u horarios para estudiar los picos de corta duración, incorporar información regional o estimar un modelo que cuantifique el efecto de la temperatura controlando por otros factores económicos.
 
 \section{Reflexión metodológica}\label{sec:reflexion}
-Se utilizó inteligencia artificial; particularmente Claude, Gemini y ChatGP, como apoyo tanto en el desarrollo del notebook como en la elaboración del informe. Para ello, se le brindó contexto sobre el trabajo y ejemplos de archivos de clase que reflejaban el estilo buscado.
+Se utilizaron herramientas de inteligencia artificial, particularmente Claude, Gemini y ChatGPT, como apoyo tanto en el desarrollo del notebook como en la elaboración del informe. Para ello, se les brindó contexto sobre el trabajo y ejemplos de archivos de clase que reflejaban el estilo buscado.
 
 En el notebook, la IA propuso la estructura general y la organización de las celdas. La metodología consistió en indicarle qué se buscaba hacer para que generara el código correspondiente, que luego fue ajustado por el grupo, agregando o modificando líneas según las necesidades del análisis. En el caso de los gráficos, el código se elaboró a partir de una estética definida previamente. Además, la IA se utilizó para corregir errores de código y mejorar la redacción de las interpretaciones.
 
